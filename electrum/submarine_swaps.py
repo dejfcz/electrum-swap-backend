@@ -99,7 +99,7 @@ WITNESS_TEMPLATE_SWAP = [
     opcodes.OP_CHECKSIG
 ]
 
-CAP_FORWARD_V1 = 1 # supports forward swaps with v1 flow
+CAP_FORWARD_V1 = "forwardv1"               # supports forward swaps with v1 flow
 
 
 def _check_swap_scriptcode(
