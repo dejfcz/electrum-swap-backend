@@ -48,7 +48,6 @@ from .invoices import Invoice, PR_PAID
 from .lnonion import OnionRoutingFailure, OnionFailureCode
 from .lnsweep import SweepInfo
 
-
 if TYPE_CHECKING:
     from .network import Network
     from .wallet import Abstract_Wallet
@@ -69,7 +68,6 @@ MIN_FINAL_CLTV_DELTA_FOR_CLIENT = 3 * 144  # note: put in invoice, but is not en
 assert MIN_LOCKTIME_DELTA <= LOCKTIME_DELTA_REFUND <= MAX_LOCKTIME_DELTA
 assert MAX_LOCKTIME_DELTA < lnutil.MIN_FINAL_CLTV_DELTA_ACCEPTED
 assert MAX_LOCKTIME_DELTA < MIN_FINAL_CLTV_DELTA_FOR_CLIENT
-
 
 # The script of the reverse swaps has one extra check in it to verify
 # that the length of the preimage is 32. This is required because in
@@ -98,6 +96,8 @@ WITNESS_TEMPLATE_SWAP = [
     opcodes.OP_ENDIF,
     opcodes.OP_CHECKSIG
 ]
+
+CAP_FORWARD_V1 = 1 # supports forward swaps with v1 flow
 
 
 def _check_swap_scriptcode(
@@ -1784,7 +1784,7 @@ class NostrTransport(SwapServerTransport):
             'max_reverse_amount': sm._max_reverse,
             'relays': sm.config.NOSTR_RELAYS,
             'pow_nonce': hex(sm.config.SWAPSERVER_ANN_POW_NONCE),
-            'forwardv1': True, # announce support for the old forward swap protocol flow
+            'capabilities': [ CAP_FORWARD_V1 ], # announce support for the old forward swap protocol flow
         }
         # the first value of a single letter tag is indexed and can be filtered for
         tags = [['d', f'electrum-swapserver-{self.NOSTR_EVENT_VERSION}'],
