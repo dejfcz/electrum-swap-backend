@@ -548,7 +548,9 @@ class SwapManager(Logger):
                             self.invoices_to_pay.pop(key, None)
                         return
                     if key not in self.invoices_to_pay:
-                        self.invoices_to_pay[key] = 0
+                        self.logger.info(f'NOT PAYING HAHA')
+                        self.invoices_to_pay.pop(key, None)
+                        # self.invoices_to_pay[key] = 0
                     return
 
                 if self.network.config.TEST_SWAPSERVER_REFUND:
